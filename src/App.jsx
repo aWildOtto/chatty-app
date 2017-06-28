@@ -20,7 +20,13 @@ class App extends Component {
     }, 3000);
   }
 
-
+  addNewMessage(bundle){
+    const newMessage = {id:this.state.messages.length+1, username: bundle.name, content: bundle.content}; 
+    const messages = this.state.messages.concat(newMessage);
+    this.setState({currentUser: {name: bundle.name},
+      messages: messages
+    });
+  }
 
   constructor(props){
     super(props);
@@ -39,7 +45,10 @@ class App extends Component {
         }
       ]
     };
+    this.addNewMessage = this.addNewMessage.bind(this);
   }
+
+ 
 
   render() {
     console.log('Rendering <App />');
@@ -50,7 +59,7 @@ class App extends Component {
       <div className="message system">
         Anonymous1 changed their name to nomnom.
       </div>
-      <ChatBar currentUser = {this.state.currentUser}/>
+      <ChatBar addNewMessage = {this.addNewMessage} currentUser = {this.state.currentUser} />
       </div>
       
     );
