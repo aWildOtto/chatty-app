@@ -14,14 +14,14 @@ class ChatBar extends Component {
   messageHandler(e){
     this.setState({content: e.target.value});
   }
+  setName(e){
+    this.setState({name: e.target.value});
+  }
   enterHandler(e){
     if(e.key === "Enter"){
       this.props.addNewMessage(this.state);  
       this.setState({content: ''});
     }
-  }
-  setName(e){
-    this.setState({name: e.target.value});
   }
   render() {
     console.log('Rendering <ChatBar />');
