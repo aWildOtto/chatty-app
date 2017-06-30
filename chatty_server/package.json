@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "4.15.3",
     "node-uuid": "1.4.8",
+    "randomcolor": "^0.5.3",
     "ws": "3.0.0"
   }
 }
