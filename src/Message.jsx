@@ -4,11 +4,14 @@ function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+[.png|.jpg|.gif])/g;
     var matches = text.match(urlRegex);
     let allImgTag = "";
+    if(!matches){
+      return {__html: `<div>${text}</div>`};
+    }
     matches.forEach(function(element) {
       text = text.replace(element, "");  
       allImgTag += `<img class = "chatImage" src="${element}">`;
     });
-    let textDiv = `<div>${text}</div>`
+    let textDiv = `<div>${text}</div>`;
     return {__html: allImgTag + textDiv };
   }
 
