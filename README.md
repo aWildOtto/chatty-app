@@ -1,20 +1,21 @@
 # Chatty App
-=====================
-A real-time chatting app built in React, WebSocket, Node.js/Express.js
+A real-time chatting app built in 
+
+Front-end:
+
+React
+
+Back-end:
+
+Node.js, Express.js, WebSocket
+
+Features real-time group chatting, username change notification, image url converts to images, randomly assigned username color 
 
 ### Usage
 
-Clone the boilerplate and create your own git repo.
+Install the dependencies and start the server in root folder.
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
-
-Install the dependencies and start the server.
+Install the dependencies and start the server in chatty-server folder.
 
 ```
 npm install
@@ -22,23 +23,13 @@ npm start
 open http://localhost:3000
 ```
 
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
 
 ### Dependencies
 
 * React
+* Node
 * Webpack
+* UUID
+* Random color picker
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
