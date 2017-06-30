@@ -19,30 +19,46 @@ const wss = new SocketServer({ server });
 wss.broadcast = (data) => {
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
+      client.send(JSON.stringify(data));
     }
   });
 };
-wss.sendUserCount = ()=>{
-  wss.broadcast(JSON.stringify({
+wss.sendUserCount = () => {
+  wss.broadcast({
     type: "userCount",
-    userCount: wss._server._connections
-  }));
+    userCount
+  });
 }
+wss.sendWelcome = () => {//send a welcome when a new user joins
+  wss.broadcast({
+    id: UUID(),
+    type: "incoming notification",
+    content: "A user has joined the chat. Welcome and please set your name"
+  })
+}
+
+let userCount = 0;
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
-  console.log(ws);
+  userCount ++;
   wss.sendUserCount();
-
-  if(ws.color){
+  wss.sendWelcome();
+  if(!ws.color){
     ws.color = randomColor();
   }
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
-    // console.log('Client disconnected');
+    console.log("client disconnected");
+    const userName = ws.username? ws.username: "user";
+    wss.broadcast({// send a notification when a user leaves
+      id: UUID(),
+      type: "incoming notification",
+      content: `${userName} has left the chat`
+    });
+    userCount --;
     wss.sendUserCount();
   });
   ws.on('message', (message)=>{
@@ -50,20 +66,19 @@ wss.on('connection', (ws) => {
     const msgObj = JSON.parse(message);
     switch (msgObj.type){
       case "sendMessage":
-        // console.log("User", msgObj.username, "said", msgObj.content);
         msgObj.id = UUID();
         msgObj.color = ws.color;
         msgObj.type = "incoming message";
-        wss.broadcast(JSON.stringify(msgObj));
+        wss.broadcast(msgObj);
         break;
       case "usernameChange":
-        // console.log(msgObj);
         ws.color = randomColor();
-        wss.broadcast(JSON.stringify({
+        ws.username = msgObj.newUsername;
+        wss.broadcast({
           id: UUID(),
           type: "incoming notification",
           content: msgObj.content
-        }));
+        });
         break;
       } 
     });

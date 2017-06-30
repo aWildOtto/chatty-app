@@ -11,10 +11,13 @@ class App extends Component {
     this.state = {
       userCount: 0,
       currentUser: {
-        name: "Anonymous",
-      }, // optional. if currentUser is not defined, it means the user is Anonymous
+        name: "user",
+      },
       messages: []
     };
+  }
+  sendToServer(msg){//utility to send message to server
+    this.ws.send(JSON.stringify(msg));
   }
     // in App.jsx
   componentDidMount() {
@@ -26,13 +29,10 @@ class App extends Component {
       const data = JSON.parse(message.data);
       switch(data.type){
         case "userCount":
-          console.log("counting user!!!", data.userCount);
           this.setState({userCount: data.userCount});
-          console.log("updated usercount", this.state.userCount);
           break;
         case "incoming message":
           const messages = this.state.messages.concat(data);
-          console.log(JSON.parse(message.data));
           this.setState({messages});
           break;
         case "incoming notification":
@@ -58,7 +58,7 @@ class App extends Component {
     if(bundle.content.length !== 0){
       const newMessage = {type:"sendMessage", username: bundle.name, content: bundle.content}; 
       const messages = this.state.messages.concat(newMessage);
-      this.ws.send(JSON.stringify(newMessage));
+      this.sendToServer(newMessage);
     }
   }
 
@@ -66,13 +66,17 @@ class App extends Component {
   changeUsername(newUsername){
     console.log("something");
     if(newUsername !== this.state.currentUser.name){
-      const userNameMsg = {type:"usernameChange", content: `${this.state.currentUser.name} has changed their name to ${newUsername}`}
+      const userNameMsg = {
+        type:"usernameChange",
+        newUsername, 
+        content: `${this.state.currentUser.name} has changed their name to ${newUsername}`
+      };
       this.setState({currentUser:{
           name: newUsername
         } 
       });
         
-      this.ws.send(JSON.stringify(userNameMsg));
+      this.sendToServer(userNameMsg);
     }
   }
 
