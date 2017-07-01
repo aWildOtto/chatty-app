@@ -1,4 +1,3 @@
-
 const express = require('express');
 const WebSocket = require('ws');
 const SocketServer = WebSocket.Server;
@@ -62,7 +61,6 @@ wss.on('connection', (ws) => {
     wss.sendUserCount();
   });
   ws.on('message', (message)=>{
-    
     const msgObj = JSON.parse(message);
     switch (msgObj.type){
       case "sendMessage":

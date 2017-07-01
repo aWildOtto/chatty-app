@@ -19,9 +19,8 @@ class App extends Component {
   sendToServer(msg){//utility to send message to server
     this.ws.send(JSON.stringify(msg));
   }
-    // in App.jsx
+  // in App.jsx
   componentDidMount() {
-    console.log("componentDidMount <App />");
 
     this.ws = new WebSocket("ws://localhost:3001");
     
@@ -64,7 +63,6 @@ class App extends Component {
 
 
   changeUsername(newUsername){
-    console.log("something");
     if(newUsername !== this.state.currentUser.name){
       const userNameMsg = {
         type:"usernameChange",
@@ -81,12 +79,10 @@ class App extends Component {
   }
 
   render() {
-    console.log('Rendering <App />');
     return (
       <div>
         <NavBar userCount = {this.state.userCount}/>
         <MessageList color = {this.state.currentUser.color} messages = {this.state.messages}/>
-        
         <ChatBar changeUsername = {this.changeUsername.bind(this)} addNewMessage = {this.addNewMessage.bind(this)} currentUser = {this.state.currentUser} />
       </div>
       

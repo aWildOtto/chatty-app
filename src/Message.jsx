@@ -4,20 +4,19 @@ function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+[.png|.jpg|.gif])/g;
     var matches = text.match(urlRegex);
     let allImgTag = "";
-    if(!matches){
+    if(!matches){//if no url in the message, send back the text in a div
       return {__html: `<div>${text}</div>`};
     }
     matches.forEach(function(element) {
       text = text.replace(element, "");  
       allImgTag += `<img class = "chatImage" src="${element}">`;
     });
-    let textDiv = `<div>${text}</div>`;
+    let textDiv = `<div>${text}</div>`;//separate text and image
     return {__html: allImgTag + textDiv };
   }
 
 class Message extends Component {
   render() {
-    console.log('Rendering <Message />');
     const colorChange = {
       color: this.props.color
     };
